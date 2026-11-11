@@ -1,0 +1,400 @@
+/* ---------- Content / Grid ---------- */
+.content-area { flex: 1; padding: 20px var(--gutter) 120px; }
+.bookmarks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(248px, 100%), 1fr)); gap: 16px; }
+.bookmarks-grid.compact { grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 10px; }
+.bookmarks-grid.list { grid-template-columns: 1fr; gap: 0; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden; }
+
+.bookmark-card {
+  position: relative;
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 14px 14px 9px 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card), var(--highlight);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-fast), background var(--transition-fast);
+}
+/* Fade-in plays only when switching views, not on every update */
+.bookmarks-grid.intro .bookmark-card { animation: cardIn 360ms var(--ease-out) both; }
+@keyframes cardIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.bookmark-card:hover { border-color: color-mix(in srgb, var(--primary) 30%, var(--border-subtle)); box-shadow: var(--shadow-card-hover), var(--highlight); transform: translateY(-2px); }
+.bookmark-card.selected { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary), var(--shadow-card); background: color-mix(in srgb, var(--primary) 5%, var(--bg-surface)); }
+.bookmark-card.dragging { opacity: 0.45; transform: scale(0.98); }
+.bookmark-card.drag-over-before { box-shadow: -3px 0 0 0 var(--primary), var(--shadow-card); }
+.bookmark-card.drag-over-after { box-shadow: 3px 0 0 0 var(--primary), var(--shadow-card); }
+
+.card-top { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.favicon-wrap {
+  width: 36px; height: 36px; flex-shrink: 0;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm), var(--highlight);
+  overflow: hidden;
+}
+.favicon-img { width: 20px; height: 20px; border-radius: 5px; object-fit: contain; }
+.favicon-fallback { width: 100%; height: 100%; display: grid; place-items: center; color: #fff; font-weight: 650; font-size: 13px; text-shadow: 0 1px 1px rgba(0,0,0,0.15); background-image: linear-gradient(160deg, rgba(255,255,255,0.22), rgba(0,0,0,0.08)) !important; }
+.card-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0; }
+.card-title-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.card-title {
+  font-size: 14.5px; font-weight: 620; letter-spacing: -0.015em; line-height: 1.35;
+  color: var(--text-main);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+}
+.card-title:hover { color: var(--primary-text); }
+.card-domain { font-size: 11.5px; color: var(--text-subtle); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* One line of tags keeps every card the same height; extra tags fade out */
+.card-tags { display: flex; flex-wrap: nowrap; gap: 4px; overflow: hidden; position: relative; z-index: 1; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+.card-tag { flex-shrink: 0; height: 19px; padding: 0 6px; display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 500; color: var(--text-muted); background: color-mix(in srgb, var(--bg-surface-active) 70%, transparent); border: 1px solid var(--border-subtle); border-radius: 6px; cursor: pointer; transition: all var(--transition-fast); }
+.card-tag:hover { color: var(--primary-text); background: var(--primary-light); }
+.card-bottom { margin-top: auto; padding-top: 6px; border-top: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 32px; }
+.card-stats { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; color: var(--text-subtle); min-width: 0; overflow: hidden; white-space: nowrap; }
+.card-stats { flex: 1; }
+/* Category first (keeps its name unless very long), then the tags fill the rest of the line */
+.card-category { display: flex; align-items: center; gap: 4px; flex: 0 1 auto; max-width: 55%; min-width: 0; }
+.card-category > span { overflow: hidden; text-overflow: ellipsis; }
+.card-stats .card-tags { flex: 1 1 0; min-width: 0; }
+.card-category + .card-tags { padding-left: 6px; margin-left: 2px; border-left: 1px solid var(--border-subtle); }
+.card-actions { display: flex; align-items: center; gap: 1px; opacity: 0; transform: translateX(4px); transition: opacity var(--transition-fast), transform var(--transition-normal); position: relative; z-index: 1; }
+.bookmark-card:hover .card-actions, .bookmark-card:focus-within .card-actions { opacity: 1; transform: none; }
+.action-btn { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; color: var(--text-subtle); position: relative; z-index: 1; transition: background var(--transition-fast), color var(--transition-fast), transform 120ms ease; }
+.action-btn:hover { background: var(--bg-surface-hover); color: var(--text-main); }
+.action-btn:active { transform: scale(0.9); }
+.action-btn[data-action="delete-bookmark"]:hover { color: var(--danger); background: var(--danger-light); }
+.card-quick { display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; margin: -4px -4px 0 auto; }
+.card-title-row .action-btn { display: none; transition: color var(--transition-fast), background var(--transition-fast); }
+.bookmark-card:hover .card-title-row .action-btn,
+.bookmark-card:focus-within .card-title-row .action-btn,
+.card-title-row .action-btn.star-active,
+.card-title-row .action-btn.notes-btn { display: grid; opacity: 1; }
+/* Notes: always-visible icon (the note text lives in a popover) */
+.action-btn.notes-btn { color: var(--primary-text); }
+.action-btn.notes-btn:hover, .action-btn.notes-btn[aria-expanded="true"] { background: var(--primary-light); color: var(--primary-text); }
+.action-btn.star-active { color: var(--star); }
+.action-btn.star-active .icon { fill: var(--star); }
+.drag-handle { width: 20px; height: 26px; display: grid; place-items: center; color: var(--text-subtle); cursor: grab; position: relative; z-index: 1; border-radius: 6px; }
+.drag-handle:hover { color: var(--text-main); }
+.drag-handle:active { cursor: grabbing; }
+
+
+/* Compact */
+.bookmarks-grid.compact .bookmark-card { padding: 10px 12px; gap: 0; border-radius: var(--radius-md); }
+.bookmarks-grid.compact .bookmark-card:hover { transform: translateY(-1px); }
+.bookmarks-grid.compact .favicon-wrap { width: 30px; height: 30px; border-radius: 8px; }
+.bookmarks-grid.compact .favicon-img { width: 16px; height: 16px; }
+.bookmarks-grid.compact .card-title { font-size: 13.5px; }
+.bookmarks-grid.compact .card-top { align-items: center; gap: 10px; }
+.bookmarks-grid.compact .card-bottom { display: none; }
+
+/* List */
+.bookmarks-grid.list .bookmark-card { flex-direction: row; align-items: center; gap: 16px; padding: 10px 16px; border: none; border-radius: 0; box-shadow: none; border-bottom: 1px solid var(--border-subtle); animation: none; }
+.bookmarks-grid.list .bookmark-card:last-child { border-bottom: none; }
+.bookmarks-grid.list .bookmark-card:hover { transform: none; box-shadow: none; background: var(--bg-surface-hover); }
+.bookmarks-grid.list .bookmark-card.selected { box-shadow: inset 3px 0 0 var(--primary); }
+.bookmarks-grid.list .card-top { flex: 1.3 1 0; min-width: 0; align-items: center; }
+.bookmarks-grid.list .favicon-wrap { width: 30px; height: 30px; border-radius: 8px; }
+.bookmarks-grid.list .favicon-img { width: 16px; height: 16px; }
+.bookmarks-grid.list .card-bottom { flex: 1.2 1 0; min-width: 0; border: none; padding: 0; margin: 0; min-height: 0; gap: 12px; }
+
+/* Empty state */
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 10px; padding: 80px 24px; max-width: 420px; margin: 24px auto 0; }
+.empty-icon-box {
+  width: 64px; height: 64px; margin-bottom: 10px;
+  border-radius: 18px; display: grid; place-items: center; color: var(--primary);
+  background: radial-gradient(circle at 30% 20%, var(--bg-surface), var(--bg-surface-hover));
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-lg), var(--highlight), 0 0 0 8px color-mix(in srgb, var(--primary) 5%, transparent);
+}
+.empty-title { font-family: var(--font-display); font-size: 20px; font-weight: 680; letter-spacing: -0.025em; }
+.empty-subtitle { font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.55; }
+
+/* Batch bar */
+.batch-bar {
+  position: fixed; left: 50%; bottom: 24px; z-index: 60;
+  transform: translate(-50%, 140%);
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 6px 6px 16px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--bg-modal) 88%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-xl);
+  opacity: 0; pointer-events: none;
+  transition: transform 380ms var(--ease-out), opacity 200ms ease;
+}
+.batch-bar.visible { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+.batch-count { font-size: 13px; font-weight: 600; margin-right: 8px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Keyboard focus */
+.bookmark-card:focus { outline: none; }
+.bookmark-card:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-card-hover);
+}
+.bookmark-card:focus-visible .card-actions,
+.bookmark-card:focus-visible .card-title-row .action-btn { opacity: 1; transform: none; }
+.bookmarks-grid.list .bookmark-card:focus-visible { box-shadow: inset 0 0 0 2px var(--primary); background: var(--bg-surface-hover); }
+
+/* Notes popover */
+.notes-popover {
+  position: fixed; z-index: 450;
+  width: min(340px, calc(100vw - 20px));
+  display: flex; flex-direction: column;
+  background: color-mix(in srgb, var(--bg-modal) 96%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid var(--border-medium);
+  border-radius: 12px;
+  box-shadow: var(--shadow-xl), var(--highlight);
+  animation: menuFadeIn 160ms var(--ease-out);
+}
+.notes-popover-head { display: flex; align-items: center; gap: 8px; padding: 8px 6px 6px 12px; color: var(--primary-text); }
+.notes-popover-title { flex: 1; min-width: 0; font-size: 12.5px; font-weight: 600; color: var(--text-main); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.notes-popover-body { padding: 2px 14px 12px; max-height: 260px; overflow-y: auto; font-size: 13px; line-height: 1.6; color: var(--text-muted); white-space: pre-wrap; overflow-wrap: anywhere; outline: none; }
+.notes-popover-foot { display: flex; justify-content: flex-end; gap: 6px; padding: 8px 10px; border-top: 1px solid var(--border-subtle); }
+.notes-popover-foot .btn { height: 28px; padding: 0 10px; font-size: 12px; }
+
+/* Grid & List cards: action icons sit cleanly with no background box */
+.bookmarks-grid.grid .card-bottom,
+.bookmarks-grid.list .card-bottom { position: relative; }
+.bookmarks-grid.grid .card-actions,
+.bookmarks-grid.list .card-actions {
+  display: none;
+  align-items: center;
+  gap: 1px;
+  margin-left: auto;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  flex-shrink: 0;
+}
+.bookmarks-grid.grid .bookmark-card:hover .card-actions,
+.bookmarks-grid.grid .bookmark-card:focus-within .card-actions,
+.bookmarks-grid.grid .bookmark-card:focus-visible .card-actions,
+.bookmarks-grid.list .bookmark-card:hover .card-actions,
+.bookmarks-grid.list .bookmark-card:focus-within .bookmark-card .card-actions,
+.bookmarks-grid.list .bookmark-card:focus-within .card-actions,
+.bookmarks-grid.list .bookmark-card:focus-visible .card-actions {
+  display: flex;
+  opacity: 1;
+  transform: none;
+}
+
+/* Footer: category on the left, click count on the right; on hover the count
+   gives way to the transparent action icons in the same spot */
+.card-clicks {
+  margin-left: auto; flex-shrink: 0;
+  font-size: 11px; font-weight: 500; color: var(--text-subtle);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+  transition: opacity var(--transition-fast);
+}
+.bookmark-card:hover .card-clicks,
+.bookmark-card:focus-within .card-clicks,
+.bookmark-card:focus-visible .card-clicks { display: none; }
+
+/* Archived badge (shown when archived links appear in search results) */
+.archived-badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  height: 18px; padding: 0 6px; flex-shrink: 0;
+  font-size: 10.5px; font-weight: 620; letter-spacing: 0.01em;
+  color: var(--warning);
+  background: var(--warning-light);
+  border: 1px solid color-mix(in srgb, var(--warning) 28%, transparent);
+  border-radius: var(--radius-full);
+}
+.archived-badge .icon { width: 10.5px; height: 10.5px; }
+.archived-badge-sm { height: 15px; padding: 0 5px; font-size: 9.5px; }
+
+/* Double-click copy feedback */
+.bookmark-card.copied-flash { animation: copiedFlash 700ms var(--ease-out); }
+@keyframes copiedFlash {
+  0% { box-shadow: inset 0 0 0 1px var(--primary), var(--shadow-card-hover); border-color: var(--primary); }
+  40% { box-shadow: inset 0 0 0 1px var(--primary), var(--shadow-card-hover); border-color: var(--primary); background: color-mix(in srgb, var(--primary) 6%, var(--bg-surface)); }
+  100% { box-shadow: var(--shadow-card-hover); }
+}
+.bookmarks-grid:not(.list) .bookmark-card { user-select: none; }
+.bookmarks-grid .bookmark-card { cursor: default; }
+.card-stats .card-tag { height: 18px; padding: 0 5px; font-size: 11px; }
+.card-category[data-cat-jump] { cursor: pointer; transition: color var(--transition-fast); }
+.card-category[data-cat-jump]:hover { color: var(--text-main); }
+.action-btn.archive-active { color: var(--warning); }
+.cs-sub-indent { color: var(--text-subtle); font-size: 12px; margin-right: -2px; }
+
+/* ==========================================================================
+   CATEGORY SECTIONS VIEW (4 Sections per Row — All Categories & Subcategories as Individual Sections)
+   ========================================================================== */
+.bookmarks-sections {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+.bookmarks-sections.intro .category-section-card {
+  animation: cardIn 360ms var(--ease-out) both;
+}
+
+.category-section-card {
+  --cat: var(--primary);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card), var(--highlight);
+  overflow: hidden;
+  transition: transform var(--transition-normal), border-color var(--transition-fast), box-shadow var(--transition-normal);
+}
+.category-section-card:hover {
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-card-hover), var(--highlight);
+  transform: translateY(-1px);
+}
+.category-section-card.drop-target-active {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--ring), var(--shadow-card-hover);
+}
+.category-section-card.sec-dragging {
+  opacity: 0.45;
+  transform: scale(0.98);
+}
+.category-section-card.sec-drop-before {
+  box-shadow: -3px 0 0 0 var(--primary), var(--shadow-card-hover);
+}
+.category-section-card.sec-drop-after {
+  box-shadow: 3px 0 0 0 var(--primary), var(--shadow-card-hover);
+}
+
+.section-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 46px;
+  padding: 0 12px 0 14px;
+  background: #F3EDE3;
+  border-bottom: 3px solid var(--cat, var(--primary));
+  flex-shrink: 0;
+  cursor: grab;
+}
+.section-card-header:active { cursor: grabbing; }
+.section-header-left {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  flex: 1;
+  cursor: pointer;
+}
+.section-header-left:hover .section-cat-title { color: var(--primary-text); }
+.section-cat-icon {
+  width: 20px; height: 20px; flex-shrink: 0;
+  display: grid; place-items: center;
+  color: var(--cat, var(--primary));
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.section-cat-icon .icon { width: 16px; height: 16px; stroke-width: 2.1; }
+.section-title-wrap { min-width: 0; flex: 1; display: flex; align-items: center; }
+.section-parent-path {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 10.5px; font-weight: 550; color: var(--text-subtle);
+  letter-spacing: 0.01em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.section-cat-title {
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 660; letter-spacing: -0.015em; line-height: 1.25;
+  color: var(--text-main);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+.section-header-right {
+  display: flex; align-items: center; justify-content: flex-end; gap: 2px; flex-shrink: 0; margin-left: auto;
+}
+.section-count {
+  min-width: 22px; height: 20px; padding: 0 7px;
+  display: inline-grid; place-items: center;
+  font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-full);
+}
+.section-head-btn {
+  display: none;
+  width: 24px; height: 24px;
+  background: transparent;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.section-head-btn:hover { background: var(--bg-surface-active); color: var(--text-main); }
+.category-section-card:hover .section-head-btn,
+.category-section-card:focus-within .section-head-btn { display: grid; opacity: 1; }
+.category-section-card:hover .section-header-right:has(.section-head-btn) .section-count,
+.category-section-card:focus-within .section-header-right:has(.section-head-btn) .section-count { display: none; }
+
+/* Section body & link rows */
+.section-card-body {
+  display: flex; flex-direction: column;
+  max-height: 360px; overflow-y: auto;
+  scrollbar-width: thin;
+}
+.bookmark-card.section-bm-card {
+  flex-direction: row; align-items: center; gap: 10px;
+  padding: 9px 10px 9px 12px;
+  border: none; border-bottom: 1px solid var(--border-subtle);
+  border-radius: 0; box-shadow: none; background: transparent;
+  transition: background var(--transition-fast);
+}
+.bookmark-card.section-bm-card:last-child { border-bottom: none; }
+.bookmark-card.section-bm-card:hover {
+  transform: none;
+  box-shadow: none;
+  background: var(--bg-surface-hover);
+}
+.bookmark-card.section-bm-card.selected { background: color-mix(in srgb, var(--primary) 7%, var(--bg-surface)); box-shadow: inset 3px 0 0 var(--primary); }
+.bookmark-card.section-bm-card::before,
+.bookmark-card.section-bm-card::after,
+.bookmark-card.section-bm-card .card-select-badge { display: none; }
+.section-favicon { width: 28px; height: 28px; border-radius: 7px; }
+.section-favicon .favicon-img { width: 15px; height: 15px; }
+.section-bm-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.section-bm-title { font-size: 13px; font-weight: 590; line-height: 1.3; }
+.section-bm-sub { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.section-bm-sub .card-domain { font-size: 11px; }
+.section-bm-tags { display: inline-flex; gap: 3px; overflow: hidden; }
+.section-bm-tags .card-tag { height: 16px; padding: 0 4px; font-size: 10px; border-radius: 4px; }
+.section-bm-right { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 1px; flex-shrink: 0; margin-left: auto; }
+.section-bm-right > .action-btn { display: none; width: 24px; height: 24px; background: transparent; }
+.section-bm-right > .action-btn.star-active,
+.section-bm-right > .action-btn.notes-btn,
+.bookmark-card.section-bm-card:hover .section-bm-right > .action-btn { display: grid; opacity: 1; }
+.section-bm-actions {
+  display: none; align-items: center; gap: 1px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.bookmark-card.section-bm-card:hover .section-bm-actions,
+.bookmark-card.section-bm-card:focus-within .section-bm-actions {
+  display: inline-flex; opacity: 1; transform: none;
+}
+.section-empty {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 18px 14px; font-size: 12.5px; color: var(--text-subtle);
+}
+.section-empty-add {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 24px; padding: 0 9px; border-radius: 6px;
+  font-size: 11.5px; font-weight: 580; color: var(--primary-text);
+  background: var(--primary-light); cursor: pointer;
+  transition: filter var(--transition-fast), transform var(--transition-fast);
+}
+.section-empty-add:hover { filter: brightness(1.06); transform: translateY(-0.5px); }

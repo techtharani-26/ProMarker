@@ -1,0 +1,78 @@
+/* ==========================================================================
+   TOASTS, MENUS, SCROLLBARS
+   ========================================================================== */
+.toast-container { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 1000; display: flex; flex-direction: column-reverse; align-items: center; gap: 8px; pointer-events: none; width: max-content; max-width: calc(100vw - 32px); }
+body:has(.batch-bar.visible) .toast-container { bottom: 84px; }
+.toast {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 8px 7px 8px; min-height: 44px;
+  border-radius: 14px;
+  font-size: 13px; font-weight: 500;
+  color: #f4f4f6;
+  background: rgba(24, 24, 28, 0.94);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 12px 32px -8px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+  pointer-events: auto;
+  animation: slideIn 320ms var(--ease-out);
+}
+.toast-msg { flex: 1; padding-right: 6px; }
+.toast-icon { width: 28px; height: 28px; flex-shrink: 0; display: grid; place-items: center; border-radius: 9px; color: #a9a9ff; background: rgba(139, 139, 255, 0.16); }
+.toast-success .toast-icon { color: #4ade80; background: rgba(74, 222, 128, 0.15); }
+.toast-danger .toast-icon { color: #ff7a7f; background: rgba(255, 99, 105, 0.16); }
+.toast:not(:has(.toast-action-btn)) { padding-right: 14px; }
+@keyframes slideIn { from { transform: translateY(14px) scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
+.toast-action-btn { height: 26px; padding: 0 10px; border-radius: 7px; font-size: 12px; font-weight: 600; color: #fff; background: rgba(255,255,255,0.12); transition: background var(--transition-fast); }
+.toast-action-btn:hover { background: rgba(255,255,255,0.2); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 10px; border: 3px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background-color: var(--border-strong); }
+
+.context-menu {
+  position: fixed; z-index: 500;
+  min-width: 220px; padding: 5px;
+  display: flex; flex-direction: column; gap: 1px;
+  background: color-mix(in srgb, var(--bg-modal) 92%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border-medium);
+  border-radius: 12px;
+  box-shadow: var(--shadow-xl), var(--highlight);
+  user-select: none;
+  animation: menuFadeIn 140ms var(--ease-out);
+  transform-origin: top left;
+}
+@keyframes menuFadeIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+.context-menu-item { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 32px; padding: 0 10px; border-radius: 7px; font-size: 13px; font-weight: 500; color: var(--text-main); cursor: pointer; }
+.context-menu-item .icon { color: var(--text-muted); }
+.context-menu-item:hover { background: var(--primary); color: var(--on-primary); }
+.context-menu-item:hover > div > .icon, .context-menu-item:hover > .icon { color: currentColor !important; opacity: 1 !important; }
+.context-menu-item.danger, .context-menu-item.danger .icon { color: var(--danger); }
+.context-menu-item.danger:hover { background: var(--danger); color: #fff; }
+.context-menu-item.danger:hover .icon { color: #fff; }
+.context-menu-separator { height: 1px; margin: 4px 6px; background: var(--border-subtle); }
+.context-submenu { position: absolute; left: calc(100% + 2px); top: -6px; display: none; max-height: 60vh; overflow-y: auto; animation: none; }
+.context-submenu.submenu-left { left: auto; right: calc(100% + 2px); }
+.context-menu-item:hover > .context-submenu { display: flex; }
+.context-submenu .context-menu-item:hover .icon { color: currentColor !important; }
+
+.danger-zone-card { display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: var(--radius-lg); border: 1px solid color-mix(in srgb, var(--danger) 28%, transparent); background: color-mix(in srgb, var(--danger) 4%, transparent); }
+
+kbd.kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; font-family: var(--font-sans); font-size: 11px; font-weight: 600; color: var(--text-muted); background: var(--bg-surface); border: 1px solid var(--border-medium); border-bottom-width: 2px; border-radius: 5px; }
+
+/* Context menu keyboard highlight */
+.context-menu-item.kbd-active { background: var(--primary); color: var(--on-primary); }
+.context-menu-item.kbd-active .icon { color: currentColor !important; opacity: 1 !important; }
+.context-menu-item.kbd-open > .context-submenu { display: flex; }
+
+/* Shortcut help dialog */
+.shortcut-help { display: grid !important; grid-template-columns: 1fr 1fr; gap: 20px 28px !important; }
+.shortcut-help h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-subtle); margin-bottom: 6px; }
+.shortcut-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 5px 0; font-size: 13px; color: var(--text-muted); border-bottom: 1px solid var(--border-subtle); }
+.shortcut-row:last-child { border-bottom: none; }
+.shortcut-keys { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.kbd-sep { font-size: 11px; color: var(--text-subtle); padding: 0 2px; }
+@media (max-width: 640px) { .shortcut-help { grid-template-columns: 1fr; } .header-shortcuts { display: none; } }

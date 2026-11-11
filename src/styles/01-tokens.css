@@ -1,0 +1,174 @@
+/* ==========================================================================
+   PROMARKER DESIGN SYSTEM — v4
+   Layered neutral surfaces, hairline borders, soft layered depth, one accent
+   with an ambient glow. Inter is embedded (src/fonts), with system fonts as fallback.
+   ========================================================================== */
+:root {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* ---------- Light (default) ---------- */
+  --bg-base: #f6f6f8;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f4f4f6;
+  --bg-surface-active: #ececf0;
+  --bg-sidebar: #f0f0f3;
+  --bg-sidebar-hover: rgba(17, 17, 26, 0.045);
+  --bg-sidebar-active: #ffffff;
+  --bg-modal: #ffffff;
+  --bg-overlay: rgba(16, 16, 22, 0.32);
+  --bg-glass: rgba(247, 247, 248, 0.78);
+
+  --border-subtle: rgba(17, 17, 26, 0.08);
+  --border-medium: rgba(17, 17, 26, 0.13);
+  --border-strong: rgba(17, 17, 26, 0.22);
+
+  --text-main: #111114;
+  --text-muted: #5d5f68;
+  --text-subtle: #9a9ca5;
+
+  --primary: #5b5bd6;
+  --primary-hover: #4c4cc4;
+  --primary-light: rgba(91, 91, 214, 0.10);
+  --primary-text: #4a4ac0;
+  --on-primary: #ffffff;
+  --ring: rgba(91, 91, 214, 0.35);
+
+  --success: #12a150;
+  --success-light: rgba(18, 161, 80, 0.10);
+  --warning: #d97706;
+  --warning-light: rgba(217, 119, 6, 0.10);
+  --danger: #e5484d;
+  --danger-light: rgba(229, 72, 77, 0.10);
+  --star: #f5a524;
+
+  --radius-sm: 7px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  --highlight: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --shadow-sm: 0 1px 2px rgba(16, 16, 24, 0.05);
+  --shadow-md: 0 1px 2px rgba(16, 16, 24, 0.04), 0 4px 12px -2px rgba(16, 16, 24, 0.06);
+  --shadow-lg: 0 2px 4px rgba(16, 16, 24, 0.04), 0 12px 32px -6px rgba(16, 16, 24, 0.12);
+  --shadow-xl: 0 4px 8px rgba(16, 16, 24, 0.04), 0 24px 64px -12px rgba(16, 16, 24, 0.22);
+  --shadow-card: 0 1px 2px rgba(16, 16, 24, 0.04), 0 2px 6px -2px rgba(16, 16, 24, 0.03);
+  --shadow-card-hover: 0 1px 2px rgba(16, 16, 24, 0.04), 0 4px 10px -4px rgba(16, 16, 24, 0.06), 0 16px 36px -12px rgba(16, 16, 24, 0.16);
+  --glow-strength: 9%;     /* ambient accent glow behind the header */
+
+  --sidebar-width: 264px;
+  --header-height: 64px;
+  --gutter: 32px;          /* one side margin shared by header, banner, toolbar and grid */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 140ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
+}
+
+/* ---------- Dark (shared by system-dark and explicit dark) ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]), :root[data-theme="system"] {
+    --bg-base: #0c0c0e; --bg-surface: #151518; --bg-surface-hover: #1c1c20; --bg-surface-active: #242429;
+    --bg-sidebar: #0f0f11; --bg-sidebar-hover: rgba(255,255,255,0.045); --bg-sidebar-active: rgba(255,255,255,0.075);
+    --bg-modal: #18181b; --bg-overlay: rgba(0,0,0,0.6); --bg-glass: rgba(12,12,14,0.72);
+    --border-subtle: rgba(255,255,255,0.07); --border-medium: rgba(255,255,255,0.11); --border-strong: rgba(255,255,255,0.18);
+    --text-main: #ededf0; --text-muted: #a1a1aa; --text-subtle: #6b6b75;
+    --primary: #7b7bf0; --primary-hover: #8f8ff5; --primary-light: rgba(123,123,240,0.14); --primary-text: #a9a9ff; --ring: rgba(123,123,240,0.45);
+    --success: #3dd68c; --success-light: rgba(61,214,140,0.12); --warning: #f5a524; --warning-light: rgba(245,165,36,0.12); --danger: #ff6369; --danger-light: rgba(255,99,105,0.12);
+    --highlight: inset 0 1px 0 rgba(255,255,255,0.06); --glow-strength: 14%;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.4); --shadow-md: 0 4px 14px -2px rgba(0,0,0,0.5); --shadow-lg: 0 14px 36px -6px rgba(0,0,0,0.6); --shadow-xl: 0 28px 72px -12px rgba(0,0,0,0.75);
+    --shadow-card: 0 1px 0 rgba(255,255,255,0.03) inset; --shadow-card-hover: 0 1px 0 rgba(255,255,255,0.05) inset, 0 14px 32px -10px rgba(0,0,0,0.7);
+    color-scheme: dark;
+  }
+}
+[data-theme="dark"] {
+  --bg-base: #0c0c0e; --bg-surface: #151518; --bg-surface-hover: #1c1c20; --bg-surface-active: #242429;
+  --bg-sidebar: #0f0f11; --bg-sidebar-hover: rgba(255,255,255,0.045); --bg-sidebar-active: rgba(255,255,255,0.075);
+  --bg-modal: #18181b; --bg-overlay: rgba(0,0,0,0.6); --bg-glass: rgba(12,12,14,0.72);
+  --border-subtle: rgba(255,255,255,0.07); --border-medium: rgba(255,255,255,0.11); --border-strong: rgba(255,255,255,0.18);
+  --text-main: #ededf0; --text-muted: #a1a1aa; --text-subtle: #6b6b75;
+  --primary: #7b7bf0; --primary-hover: #8f8ff5; --primary-light: rgba(123,123,240,0.14); --primary-text: #a9a9ff; --ring: rgba(123,123,240,0.45);
+  --success: #3dd68c; --success-light: rgba(61,214,140,0.12); --warning: #f5a524; --warning-light: rgba(245,165,36,0.12); --danger: #ff6369; --danger-light: rgba(255,99,105,0.12);
+  --highlight: inset 0 1px 0 rgba(255,255,255,0.06); --glow-strength: 14%;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4); --shadow-md: 0 4px 14px -2px rgba(0,0,0,0.5); --shadow-lg: 0 14px 36px -6px rgba(0,0,0,0.6); --shadow-xl: 0 28px 72px -12px rgba(0,0,0,0.75);
+  --shadow-card: 0 1px 0 rgba(255,255,255,0.03) inset; --shadow-card-hover: 0 1px 0 rgba(255,255,255,0.05) inset, 0 14px 32px -10px rgba(0,0,0,0.7);
+  color-scheme: dark;
+}
+
+/* ---------- Light (explicit) ---------- */
+[data-theme="light"] { color-scheme: light; }
+
+/* ---------- Midnight (OLED) ---------- */
+[data-theme="midnight"] {
+  --bg-base: #000000; --bg-surface: #0b0b0d; --bg-surface-hover: #121215; --bg-surface-active: #19191d;
+  --bg-sidebar: #000000; --bg-sidebar-hover: rgba(255,255,255,0.05); --bg-sidebar-active: rgba(255,255,255,0.08);
+  --bg-modal: #0d0d10; --bg-overlay: rgba(0,0,0,0.75); --bg-glass: rgba(0,0,0,0.72);
+  --border-subtle: rgba(255,255,255,0.075); --border-medium: rgba(255,255,255,0.12); --border-strong: rgba(255,255,255,0.2);
+  --text-main: #f2f2f5; --text-muted: #9e9ea8; --text-subtle: #62626c;
+  --primary: #8b8bff; --primary-hover: #a1a1ff; --primary-light: rgba(139,139,255,0.14); --primary-text: #b3b3ff; --ring: rgba(139,139,255,0.45);
+  --success: #3dd68c; --success-light: rgba(61,214,140,0.12); --warning: #f5a524; --warning-light: rgba(245,165,36,0.12); --danger: #ff6369; --danger-light: rgba(255,99,105,0.12);
+  --highlight: inset 0 1px 0 rgba(255,255,255,0.05); --glow-strength: 12%;
+  --shadow-sm: none; --shadow-md: 0 6px 18px -4px rgba(0,0,0,0.9); --shadow-lg: 0 16px 40px -8px rgba(0,0,0,0.95); --shadow-xl: 0 30px 80px -10px rgba(0,0,0,1);
+  --shadow-card: none; --shadow-card-hover: 0 0 0 1px rgba(139,139,255,0.18), 0 16px 36px -12px rgba(0,0,0,1);
+  color-scheme: dark;
+}
+
+/* ---------- Espresso (warm dark) ---------- */
+[data-theme="espresso"] {
+  --bg-base: #302018;
+  --bg-surface: #3a281e; --bg-surface-hover: #433026; --bg-surface-active: #4d382c;
+  --bg-sidebar: #281a13; --bg-sidebar-hover: rgba(255,236,210,0.05); --bg-sidebar-active: rgba(255,236,210,0.08);
+  --bg-modal: #3a281e; --bg-overlay: rgba(12,7,4,0.6); --bg-glass: rgba(48,32,24,0.78);
+  --border-subtle: rgba(255,232,200,0.075); --border-medium: rgba(255,232,200,0.12); --border-strong: rgba(255,232,200,0.2);
+  --text-main: #fdfbf7;
+  --text-muted: #c9b8a6; --text-subtle: #957f6b;
+  --primary: #d6a26c; --primary-hover: #e3b483; --primary-light: rgba(214,162,108,0.14); --primary-text: #ebc193; --on-primary: #1a120c; --ring: rgba(214,162,108,0.45);
+  --success: #6fcf97; --success-light: rgba(111,207,151,0.12); --warning: #f2b24c; --warning-light: rgba(242,178,76,0.12); --danger: #f2706b; --danger-light: rgba(242,112,107,0.12);
+  --highlight: inset 0 1px 0 rgba(255,236,210,0.06); --glow-strength: 12%;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.45); --shadow-md: 0 4px 14px -2px rgba(0,0,0,0.55); --shadow-lg: 0 14px 36px -6px rgba(0,0,0,0.6); --shadow-xl: 0 28px 72px -12px rgba(0,0,0,0.75);
+  --shadow-card: 0 1px 0 rgba(255,236,210,0.035) inset; --shadow-card-hover: 0 1px 0 rgba(255,236,210,0.06) inset, 0 14px 32px -10px rgba(0,0,0,0.7);
+  color-scheme: dark;
+}
+
+/* ---------- Latte (warm light) ---------- */
+[data-theme="latte"] {
+  --bg-base: #fdfbf7;
+  --bg-surface: #ffffff; --bg-surface-hover: #f9f4ec; --bg-surface-active: #f2eadf;
+  --bg-sidebar: #f5eee4; --bg-sidebar-hover: rgba(70,42,18,0.05); --bg-sidebar-active: #ffffff;
+  --bg-modal: #ffffff; --bg-overlay: rgba(48,32,24,0.3); --bg-glass: rgba(253,251,247,0.8);
+  --border-subtle: rgba(70,42,18,0.09); --border-medium: rgba(70,42,18,0.15); --border-strong: rgba(70,42,18,0.25);
+  --text-main: #302018;
+  --text-muted: #6f5d4e; --text-subtle: #a6927f;
+  --primary: #8f5a2e; --primary-hover: #7a4b24; --primary-light: rgba(143,90,46,0.10); --primary-text: #7a4b24; --ring: rgba(143,90,46,0.32);
+  --success: #2f8a4f; --success-light: rgba(47,138,79,0.10); --warning: #c27a12; --warning-light: rgba(194,122,18,0.10); --danger: #c8443d; --danger-light: rgba(200,68,61,0.10);
+  --shadow-card: 0 1px 2px rgba(70,42,18,0.05); --shadow-card-hover: 0 1px 2px rgba(70,42,18,0.05), 0 12px 30px -10px rgba(70,42,18,0.2);
+  --shadow-lg: 0 2px 4px rgba(70,42,18,0.04), 0 14px 34px -8px rgba(70,42,18,0.18); --shadow-xl: 0 4px 8px rgba(70,42,18,0.05), 0 28px 64px -14px rgba(70,42,18,0.3);
+  color-scheme: light;
+}
+
+/* Latte keeps a rich espresso sidebar: tokens are re-scoped inside it so every
+   sidebar component (nav, badges, status card) switches to light-on-dark. */
+[data-theme="latte"] .sidebar {
+  --bg-sidebar: #302018;
+  --bg-sidebar-hover: rgba(253, 251, 247, 0.07);
+  --bg-sidebar-active: rgba(253, 251, 247, 0.11);
+  --bg-surface: rgba(253, 251, 247, 0.06);
+  --bg-surface-hover: rgba(253, 251, 247, 0.1);
+  --border-subtle: rgba(253, 251, 247, 0.09);
+  --border-medium: rgba(253, 251, 247, 0.14);
+  --text-main: #fdfbf7;
+  --text-muted: #d4c3b0;
+  --text-subtle: #a08a75;
+  --primary: #c99262;
+  --primary-light: rgba(226, 178, 128, 0.18);
+  --primary-text: #ecc596;
+  --highlight: inset 0 1px 0 rgba(253, 251, 247, 0.06);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --ring: rgba(226, 178, 128, 0.45);
+  color: var(--text-main);
+  border-right-color: transparent;
+}
+[data-theme="latte"] .sidebar .nav-item.active { box-shadow: inset 0 0 0 1px rgba(253, 251, 247, 0.08); }
+[data-theme="latte"] .sidebar .brand-logo { background: linear-gradient(140deg, #e2b280 0%, #b9814f 60%, #8f5a2e 100%); }

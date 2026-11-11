@@ -1,0 +1,66 @@
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+.sidebar-scrim { display: none; }
+@media (max-width: 1440px) {
+  .bookmarks-sections { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 1080px) {
+  .bookmarks-sections { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .sidebar { position: fixed; top: 0; bottom: 0; left: 0; box-shadow: var(--shadow-xl); }
+  .sidebar.collapsed { width: var(--sidebar-width); transform: translateX(-100%); opacity: 1; box-shadow: none; }
+  .sidebar:not(.collapsed) ~ .sidebar-scrim { display: block; position: fixed; inset: 0; z-index: 35; background: var(--bg-overlay); animation: fadeIn 200ms ease; }
+  :root { --gutter: 22px; }
+}
+@media (max-width: 640px) {
+  :root { --header-height: 58px; --gutter: 16px; }
+  .bookmarks-sections { grid-template-columns: minmax(0, 1fr); }
+  .search-shortcut, #btn-new-bookmark span, .undo-redo-group { display: none; }
+  .search-input { padding-right: 38px; }
+  #btn-new-bookmark { width: 34px; padding: 0; }
+  .top-header { gap: 8px; }
+  .sub-bar { padding-top: 14px; gap: 12px; }
+  .content-area { padding-top: 16px; }
+  .bookmarks-grid { gap: 12px; }
+  .category-title { font-size: 20px; }
+  .sub-bar-top { align-items: flex-start; }
+  .bookmarks-grid { grid-template-columns: minmax(0, 1fr); }
+  .view-sort-controls { width: 100%; }
+  .view-sort-controls > div:last-child { flex: 1; }
+  .select-dropdown { width: 100%; }
+  .sub-bar-top { gap: 12px; }
+  .card-actions { opacity: 1; transform: none; }
+  .card-title-row .action-btn { opacity: 1; }
+  .bookmarks-grid.list .card-tags { display: none; }
+  .file-connect-banner { flex-direction: column; align-items: stretch; }
+  .modal-overlay { padding: 16px 12px; align-items: flex-end; }
+  .modal { max-height: 90vh; }
+  .batch-bar { left: 12px; right: 12px; transform: translateY(140%); overflow-x: auto; }
+  .batch-bar.visible { transform: none; }
+}
+@media (hover: none) {
+  .card-actions, .card-title-row .action-btn { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+  .top-header { animation-duration: auto !important; }
+}
+@media (max-width: 640px) {
+  .heading-icon { width: 34px; height: 34px; border-radius: 10px; }
+  .banner-actions { justify-content: flex-end; }
+}
+
+/* Touch screens can't drag cards; hide the grip to give the footer room */
+@media (hover: none) { .drag-handle { display: none; } }
+
+/* Phones and touch screens: actions are always shown, so keep them in the normal flow */
+@media (max-width: 640px), (hover: none) {
+  .bookmarks-grid.grid .card-actions,
+  .bookmarks-grid.grid .bookmark-card:hover .card-actions { position: static; transform: none; padding-left: 0; background: none; opacity: 1; }
+}
+@media (max-width: 640px), (hover: none) {
+  .card-clicks { display: none; }
+  .bookmarks-grid.list .card-actions { position: static; transform: none; padding-left: 0; background: none; opacity: 1; }
+}

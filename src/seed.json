@@ -1,0 +1,187 @@
+{
+  "version": 1,
+  "settings": {
+    "theme": "system",
+    "viewMode": "grid",
+    "sortBy": "custom",
+    "openInNewTab": true,
+    "trackClicks": true,
+    "copyFormat": "title-link",
+    "autoSave": true
+  },
+  "categories": [
+    {
+      "id": "cat-dev",
+      "name": "Development",
+      "icon": "code",
+      "color": "#6366f1",
+      "order": 0
+    },
+    {
+      "id": "cat-design",
+      "name": "Design & UI",
+      "icon": "palette",
+      "color": "#ec4899",
+      "order": 1
+    },
+    {
+      "id": "cat-ai",
+      "name": "AI & Tools",
+      "icon": "sparkles",
+      "color": "#8b5cf6",
+      "order": 2
+    },
+    {
+      "id": "cat-news",
+      "name": "Tech & News",
+      "icon": "globe",
+      "color": "#06b6d4",
+      "order": 3
+    },
+    {
+      "id": "cat-reading",
+      "name": "Reading & Docs",
+      "icon": "book-open",
+      "color": "#10b981",
+      "order": 4
+    }
+  ],
+  "bookmarks": [
+    {
+      "id": "bm-1",
+      "title": "GitHub",
+      "url": "https://github.com",
+      "description": "Where the world builds software. Code hosting, version control, collaboration.",
+      "categoryId": "cat-dev",
+      "tags": [
+        "git",
+        "code",
+        "open-source"
+      ],
+      "isFavorite": true,
+      "isTrash": false,
+      "clickCount": 42,
+      "createdAt": 1700000000000,
+      "order": 0
+    },
+    {
+      "id": "bm-2",
+      "title": "MDN Web Docs",
+      "url": "https://developer.mozilla.org",
+      "description": "Resources for developers, by developers. The authority on HTML, CSS, and JavaScript.",
+      "categoryId": "cat-dev",
+      "tags": [
+        "docs",
+        "javascript",
+        "reference"
+      ],
+      "isFavorite": true,
+      "isTrash": false,
+      "clickCount": 18,
+      "createdAt": 1700001000000,
+      "order": 1
+    },
+    {
+      "id": "bm-3",
+      "title": "Figma",
+      "url": "https://figma.com",
+      "description": "The collaborative interface design tool. Design, prototype, and gather feedback in one place.",
+      "categoryId": "cat-design",
+      "tags": [
+        "design",
+        "ui",
+        "collaboration"
+      ],
+      "isFavorite": true,
+      "isTrash": false,
+      "clickCount": 35,
+      "createdAt": 1700002000000,
+      "order": 2
+    },
+    {
+      "id": "bm-4",
+      "title": "Tailwind CSS",
+      "url": "https://tailwindcss.com",
+      "description": "A utility-first CSS framework packed with classes that can be composed to build any design.",
+      "categoryId": "cat-design",
+      "tags": [
+        "css",
+        "framework",
+        "styling"
+      ],
+      "isFavorite": false,
+      "isTrash": false,
+      "clickCount": 9,
+      "createdAt": 1700003000000,
+      "order": 3
+    },
+    {
+      "id": "bm-5",
+      "title": "ChatGPT",
+      "url": "https://chatgpt.com",
+      "description": "Conversational AI model for drafting, coding, brainstorms, and analysis.",
+      "categoryId": "cat-ai",
+      "tags": [
+        "ai",
+        "assistant",
+        "productivity"
+      ],
+      "isFavorite": true,
+      "isTrash": false,
+      "clickCount": 54,
+      "createdAt": 1700004000000,
+      "order": 4
+    },
+    {
+      "id": "bm-6",
+      "title": "Hugging Face",
+      "url": "https://huggingface.co",
+      "description": "The AI community building the future. Open-source models, datasets, and ML spaces.",
+      "categoryId": "cat-ai",
+      "tags": [
+        "ai",
+        "models",
+        "ml"
+      ],
+      "isFavorite": false,
+      "isTrash": false,
+      "clickCount": 12,
+      "createdAt": 1700005000000,
+      "order": 5
+    },
+    {
+      "id": "bm-7",
+      "title": "Hacker News",
+      "url": "https://news.ycombinator.com",
+      "description": "A social news website focusing on computer science, entrepreneurship, and technology.",
+      "categoryId": "cat-news",
+      "tags": [
+        "news",
+        "tech",
+        "community"
+      ],
+      "isFavorite": false,
+      "isTrash": false,
+      "clickCount": 27,
+      "createdAt": 1700006000000,
+      "order": 6
+    },
+    {
+      "id": "bm-8",
+      "title": "DevDocs API Documentation",
+      "url": "https://devdocs.io",
+      "description": "Fast, offline, and free documentation browser for developers with 100+ API docs.",
+      "categoryId": "cat-reading",
+      "tags": [
+        "docs",
+        "offline",
+        "reference"
+      ],
+      "isFavorite": false,
+      "isTrash": false,
+      "clickCount": 7,
+      "createdAt": 1700007000000,
+      "order": 7
+    }
+  ]
+}
